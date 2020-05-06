@@ -21,7 +21,7 @@ module.exports = programString =>{
       } else{
         tokenSting += tokens['var']
       }
-    }else if (!isNaN(programString[ip])) {
+    }else if (programString[ip].match(/[0-9]/)) {
       currentToken += programString[ip];
       ip ++;
       while(programString[ip].match(/[0-9]|\./)){
@@ -29,6 +29,38 @@ module.exports = programString =>{
         ip++;
       }
       tokenSting += tokens['num'];
+    }else if (programString[ip].match(/=/)) {
+      currentToken += programString[ip];
+      ip ++;
+      if(programString[ip].match(/=/)){
+        currentToken += programString[ip];
+        ip ++;
+      }
+      tokenSting += tokens[currentToken];
+    }else if (programString[ip].match(/&/)) {
+      currentToken += programString[ip];
+      ip ++;
+      if(programString[ip].match(/&/)){
+        currentToken += programString[ip];
+        ip ++;
+      }
+      tokenSting += tokens[currentToken];
+    }else if (programString[ip].match(/\|/)) {
+      currentToken += programString[ip];
+      ip ++;
+      if(programString[ip].match(/\|/)){
+        currentToken += programString[ip];
+        ip ++;
+      }
+      tokenSting += tokens[currentToken];
+    } else if (programString[ip] == ('>' || '<')) {
+      currentToken += programString[ip];
+      ip ++;
+      if(programString[ip].match(/=/)){
+        currentToken += programString[ip];
+        ip ++;
+      }
+      tokenSting += tokens[currentToken];
     } else{
       if(tokens[programString[ip]]){
         tokenSting += tokens[programString[ip]];
@@ -46,7 +78,6 @@ module.exports = programString =>{
         exit(`Error on line ${newLine}:${pointerCount}`);
       }
     }
-    ip ++;
   }
   return tokenSting;
 }

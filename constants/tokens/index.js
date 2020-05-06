@@ -24,4 +24,6 @@ module.exports = {
   "==": "t",
   print: "u",
   end: "v",
+  "&&": "w",
+  "||": "x"
 };

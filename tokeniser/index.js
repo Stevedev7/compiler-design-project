@@ -1,78 +1,51 @@
 //tokenizer code
-const tokens = require('../constants').tokens;
-const exit = require('../exit');
-module.exports = programString =>{
+const tokens = require("../constants").tokens;
+const exit = require("../exit");
+module.exports = (programString) => {
   let ip = 0;
 
-  programString += '$';
+  programString += "$";
   let tokenSting = "";
 
-  while(programString[ip] != '$'){
-    let currentToken = '';
-    if(programString[ip].match(/[a-zA-Z_]/)){
+  while (programString[ip] != "$") {
+    let currentToken = "";
+    if (programString[ip].match(/[a-zA-Z_]/)) {
       currentToken += programString[ip];
-      ip ++;
-      while(programString[ip].match(/[0-9a-zA-Z_]/)){
-        currentToken += programString[ip];
-        ip ++;
-      }
-      if(tokens[currentToken]){
-        tokenSting += tokens[currentToken];
-      } else{
-        tokenSting += tokens['var']
-      }
-    }else if (programString[ip].match(/[0-9]/)) {
-      currentToken += programString[ip];
-      ip ++;
-      while(programString[ip].match(/[0-9]|\./)){
+      ip++;
+      while (programString[ip].match(/[0-9a-zA-Z_]/)) {
         currentToken += programString[ip];
         ip++;
       }
-      tokenSting += tokens['num'];
-    }else if (programString[ip].match(/=/)) {
-      currentToken += programString[ip];
-      ip ++;
-      if(programString[ip].match(/=/)){
-        currentToken += programString[ip];
-        ip ++;
+      if (currentToken in tokens) {
+        tokenSting += tokens[currentToken];
+      } else {
+        tokenSting += tokens["var"];
       }
-      tokenSting += tokens[currentToken];
-    }else if (programString[ip].match(/&/)) {
+    } else if (programString[ip].match(/[0-9]/)) {
       currentToken += programString[ip];
-      ip ++;
-      if(programString[ip].match(/&/)){
+      ip++;
+      while (programString[ip].match(/[0-9]|\./)) {
         currentToken += programString[ip];
-        ip ++;
+        ip++;
       }
-      tokenSting += tokens[currentToken];
-    }else if (programString[ip].match(/\|/)) {
-      currentToken += programString[ip];
-      ip ++;
-      if(programString[ip].match(/\|/)){
-        currentToken += programString[ip];
-        ip ++;
-      }
-      tokenSting += tokens[currentToken];
-    } else if (programString[ip] == ('>' || '<')) {
-      currentToken += programString[ip];
-      ip ++;
-      if(programString[ip].match(/=/)){
-        currentToken += programString[ip];
-        ip ++;
-      }
-      tokenSting += tokens[currentToken];
-    } else{
-      if(tokens[programString[ip]]){
-        tokenSting += tokens[programString[ip]];
-        ip ++;
-      } else{
-        var newLine = 1, pointerCount = 0;
-        for(let i = 0; i < ip; i++){
-          if(programString[i].match(/\n/)){
-            newLine ++;
+      tokenSting += tokens["num"];
+    } else {
+      let [first, second] = programString.slice(ip);
+      if (first + second in tokens) {
+        tokenSting += tokens[first + second];
+        ip += 2;
+      } else if (first in tokens) {
+        tokenSting += tokens[first];
+        ip += 1;
+      } else {
+        var newLine = 1,
+          pointerCount = 0;
+        for (let i = 0; i < ip; i++) {
+          if (programString[i].match(/\n/)) {
+            newLine++;
             pointerCount = 0;
-          } else{
-            pointerCount ++;
+          } else {
+            pointerCount++;
           }
         }
         exit(`Error on line ${newLine}:${pointerCount}`);
@@ -80,4 +53,4 @@ module.exports = programString =>{
     }
   }
   return tokenSting;
-}
+};

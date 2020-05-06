@@ -1,6 +1,6 @@
 int main()
 begin
-    int a, b, c, d, e;
+    int _a, b, c, d, e;
     if(a == b && b == c)
     begin
         print(a);

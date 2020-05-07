@@ -1,4 +1,4 @@
-const { tokens, rules, parsetable } = require("./constants");
+const { tokens } = require("./constants");
 
 const fs = require("fs");
 const [, , fileName] = process.argv;
@@ -22,3 +22,5 @@ const tokenString = tokeniser(program);
 console.log(tokenString);
 
 // parsig
+
+parse(tokenString, tokens["\n"]);

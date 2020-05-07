@@ -1,5 +1,5 @@
 //tokenizer code
-const tokens = require("../constants").tokens;
+const { tokens } = require("../constants");
 const exit = require("../exit");
 module.exports = (programString) => {
   let ip = 0;

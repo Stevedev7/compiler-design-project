@@ -1,6 +1,6 @@
 module.exports = [
   ["S-", "S"], // 0
-  ["S", "abcdefgfDfndEqEefgrdhefsfs"], // 1
+  ["S", "abcdefgfDfndEqEefgfrdhemfsfsf"], // 1
   ["D", "CbLm"], // 2
   ["C", "a"], // 3
   ["C", "j"], // 4
